@@ -36,7 +36,7 @@ def main(module_name: Modules):
     typer.echo(f"Testing '{module_name}'")
     results = []
     for args, expected in module.test_cases():
-        result = module.run(*args)
+        result = module.run(*args)  # type: ignore
         if result != expected:
             results.append(f"{args} => {result} != {expected}")
 
