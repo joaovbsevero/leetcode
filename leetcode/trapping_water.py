@@ -3,47 +3,30 @@ https://leetcode.com/problems/trapping-rain-water/description/
 """
 
 
-def run(heights: list[int]) -> int:
-    total = 0
-    i = 0
-    while i < len(heights) - 1:
-        if heights[i] == 0:
-            i += 1
-            continue
+def run(height: list[int]) -> int:
+    left = 0
+    right = len(height) - 1
 
-        minimum = 0
-        while heights[i] > 0:
-            local_total = 0
-            trapped = False
-            j = i + 1
-            while j < len(heights):
-                if heights[i] > heights[j]:
-                    minimum = max(heights[j], minimum)
-                    local_total += heights[i] - heights[j]
+    left_max = height[left]
+    right_max = height[right]
 
-                elif heights[i] <= heights[j]:
-                    trapped = local_total > 0
-                    break
+    water = 0
+    while left < right:
+        if left_max < right_max:
+            left += 1
+            left_max = max(left_max, height[left])
+            water += left_max - height[left]
+        else:
+            right -= 1
+            right_max = max(right_max, height[right])
+            water += right_max - height[right]
 
-                j += 1
-
-            if trapped:
-                total += local_total
-                i = j
-                break
-
-            if heights[i] == minimum:
-                break
-
-            heights[i] = minimum
-
-        i += 0 if trapped else 1
-
-    return total
+    return water
 
 
 def test_cases():
     return [
+        (([3, 2, 1, 0],), 0),
         (([3, 2, 4, 2, 3, 2, 3],), 3),
         (([3, 2, 4, 2, 3, 4, 2, 3],), 5),
         (([3, 2, 4],), 1),

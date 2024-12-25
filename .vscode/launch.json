@@ -31,5 +31,23 @@
                 "trapping_water"
             ]
         },
+        {
+            "name": "Valid Number",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "valid_number"
+            ]
+        },
+        {
+            "name": "Serde Binary Tree",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "serde_binary_tree"
+            ]
+        },
     ]
 }

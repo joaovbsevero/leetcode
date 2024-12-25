@@ -1,12 +1,26 @@
+import importlib
+import os
 from enum import StrEnum
+from typing import TYPE_CHECKING
 
 import typer
 
+enum_variants = "    "
+for file in os.scandir("./leetcode"):
+    if file.is_file() and file.name.endswith(".py") and not file.name.startswith("__"):
+        clean_file_name = file.name.removesuffix(".py")
+        enum_variants += f'{clean_file_name.upper()} = "{clean_file_name}"\n    '
 
+
+exec(f"""
 class Modules(StrEnum):
-    TRAPPING_WATER = "trapping_water"
-    MEDIAN_OF_TWO_SORTED_ARRAYS = "median_of_two_sorted_arrays"
-    SIMPLE_REGEX = "simple_regex"
+{enum_variants}pass
+""")
+
+if TYPE_CHECKING:
+
+    class Modules(StrEnum):
+        pass
 
 
 def main(module_name: Modules):
@@ -17,21 +31,13 @@ def main(module_name: Modules):
         module_name: The name of the module to run.
     """
 
-    match module_name:
-        case Modules.TRAPPING_WATER:
-            from . import trapping_water
-
-            module = trapping_water
-        case Modules.MEDIAN_OF_TWO_SORTED_ARRAYS:
-            from . import median_of_two_sorted_arrays
-
-            module = median_of_two_sorted_arrays
-        case Modules.SIMPLE_REGEX:
-            from . import simple_regex
-
-            module = simple_regex
-        case _:
-            raise ValueError(f"Unknown module: {module_name}")
+    try:
+        module = importlib.import_module(f"leetcode.{module_name}")
+    except ImportError:
+        raise ValueError(
+            f"Unknown module: {module_name}, supported modules are:\n -> "
+            + "\n -> ".join(Modules.__members__)
+        )
 
     typer.echo(f"Testing '{module_name}'")
     results = []
