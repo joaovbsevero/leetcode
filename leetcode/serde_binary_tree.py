@@ -1,10 +1,11 @@
-from enum import StrEnum, auto
+import contextlib
+from collections import deque
 from typing import Self
 
 
 class TreeNode(object):
-    def __init__(self, x: int | None):
-        self.val = x
+    def __init__(self, val: int | None):
+        self.val = val
         self.left: Self | None = None
         self.right: Self | None = None
 
@@ -15,93 +16,60 @@ class TreeNode(object):
         return f"{self.val}.({self.left} | {self.right})"
 
 
-class Side(StrEnum):
-    LEFT = auto()
-    RIGHT = auto()
-
-
-def serialize(root: TreeNode) -> str:
+def serialize(root: TreeNode | None) -> str:
     """Encodes a tree to a single string.
 
     :type root: TreeNode
     :rtype: str
     """
+    serialized = ""
+    if not root:
+        return serialized
 
-    current_nodes = [root]
-    next_nodes = []
+    queue: deque[TreeNode | None] = deque([root])
+    while queue:
+        node = queue.popleft()
+        if node is None:
+            serialized += ","
+        else:
+            serialized += f"{node.val},"
+            queue.append(node.left)
+            queue.append(node.right)
 
-    serialized = f"{root.val},"
-    while current_nodes:
-        for node in current_nodes:
-            if node.left is not None:
-                serialized += f"{node.left.val},"
-                next_nodes.append(node.left)
-            else:
-                serialized += "/,"
-
-            if node.right is not None:
-                serialized += f"{node.right.val},"
-                next_nodes.append(node.right)
-            else:
-                serialized += "/,"
-
-        current_nodes = next_nodes
-        next_nodes = []
-
-    return serialized
+    return serialized.rstrip(",")
 
 
-def deserialize(data: str) -> TreeNode:
+def deserialize(data: str) -> TreeNode | None:
     """Decodes your encoded data to tree.
 
     :type data: str
     :rtype: TreeNode
     """
 
-    root = TreeNode(x=None)
-    start = 0
-    end = 0
-    while start < len(data):
-        end += 1
-        if data[end] == ",":
-            break
+    if not data:
+        return None
 
-    data_value = data[start:end]
-    if end == start - 1 and data_value[0] == "/":
-        current_value = None
-    else:
-        current_value = int(data[start:end])
+    parts = data.split(",")
+    root = TreeNode(val=int(parts[0]))
 
-    root = TreeNode(current_value)
-    if root.val is None:
-        return root
+    with contextlib.suppress(IndexError):
+        i = 1
+        queue = deque([root])
+        while queue:
+            parent = queue.popleft()
+            if parts[i]:
+                node = TreeNode(val=int(parts[i]))
+                parent.left = node
+                queue.append(node)
 
-    start = end + 1
-    side = Side.LEFT
-    nodes = [root]
-    while start < len(data):
-        end += 1
-        if data[end] != ",":
-            continue
+            i += 1
 
-        data_value = data[start:end]
-        if start == end - 1 and data_value[0] == "/":
-            node = None
-        else:
-            current_value = int(data[start:end])
-            node = TreeNode(current_value)
-            nodes.append(node)
+            if parts[i]:
+                node = TreeNode(val=int(parts[i]))
+                parent.right = node
+                queue.append(node)
 
-        parent = nodes[0]
-        if side == Side.LEFT:
-            parent.left = node
-            side = Side.RIGHT
-        else:
-            parent.right = node
-            side = Side.LEFT
-            nodes.pop(0)
-
-        start = end + 1
+            i += 1
 
     return root
 
@@ -122,4 +90,7 @@ def test_cases():
     parent.left = left
     parent.right = right
 
-    return [((parent,), "1,2,3,/,/,4,5,/,/,/,/,")]
+    return [
+        ((parent,), "1,2,3,,,4,5"),
+        ((None,), "")
+    ]
