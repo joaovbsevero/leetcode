@@ -1,0 +1,71 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Median Of Two Sorted Arrays",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "median_of_two_sorted_arrays"
+            ]
+        },
+        {
+            "name": "Simple Regex",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "simple_regex"
+            ]
+        },
+        {
+            "name": "Trapping Water",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "trapping_water"
+            ]
+        },
+        {
+            "name": "Valid Number",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "valid_number"
+            ]
+        },
+        {
+            "name": "Serde Binary Tree",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "serde_binary_tree"
+            ]
+        },
+        {
+            "name": "Merge K Sorted Lists",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "merge_k_sorted_lists"
+            ]
+        },
+        {
+            "name": "Longest Valid Parenthesis",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "longest_valid_parenthesis"
+            ]
+        },
+    ]
+}
