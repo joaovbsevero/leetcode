@@ -67,5 +67,14 @@
                 "longest_valid_parenthesis"
             ]
         },
+        {
+            "name": "Sudoku Solver",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "sudoku_solver"
+            ]
+        },
     ]
 }
