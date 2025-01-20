@@ -85,5 +85,14 @@
                 "coin_change"
             ]
         },
+        {
+            "name": "Coin Change II",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "coin_change_2"
+            ]
+        },
     ]
 }
