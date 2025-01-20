@@ -29,15 +29,9 @@ Constraints:
 Reference: https://leetcode.com/problems/sudoku-solver
 """
 
-import time
-
 
 def run(board: list[list[str]]) -> list[list[str]]:
-    total_time = time.time()
-    total_time_finding = 0
-
     def filter_possible_values(
-        possible_values: list[str],
         row: int,
         column: int,
     ) -> list[str]:
@@ -56,7 +50,7 @@ def run(board: list[list[str]]) -> list[list[str]]:
         :return: A list of possible values.
         """
 
-        possible_values_set = set(possible_values)
+        possible_values_set = {"1", "2", "3", "4", "5", "6", "7", "8", "9"}
         possible_values_set.difference_update(set(board[row]))
         if not possible_values_set:
             return []
@@ -64,18 +58,6 @@ def run(board: list[list[str]]) -> list[list[str]]:
         possible_values_set.difference_update({board[i][column] for i in range(9)})
         if not possible_values_set:
             return []
-
-        # for value in board[row]:
-        #     if value != "." and value in possible_values:
-        #         possible_values.remove(value)
-        #         if not possible_values:
-        #             return possible_values
-
-        # for value in [board[i][column] for i in range(9)]:
-        #     if value != "." and value in possible_values:
-        #         possible_values.remove(value)
-        #         if not possible_values:
-        #             return possible_values
 
         start_row = row - (row % 3)
         start_column = column - (column % 3)
@@ -87,13 +69,6 @@ def run(board: list[list[str]]) -> list[list[str]]:
                 for column_idx in range(3)
             }
         )
-        # for row_idx in range(3):
-        #     for column_idx in range(3):
-        #         value = board[start_row + row_idx][start_column + column_idx]
-        #         if value != "." and value in possible_values:
-        #             possible_values.remove(value)
-        #             if not possible_values:
-        #                 return possible_values
 
         return list(possible_values_set)
 
@@ -110,22 +85,14 @@ def run(board: list[list[str]]) -> list[list[str]]:
         :param start_column: The column index to start from.
         :return: True if the board is solved, False otherwise.
         """
-        nonlocal total_time_finding
 
-        possible_values = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
         for row_idx in range(start_row, len(board)):
             for column_idx in range(start_column, len(board[row_idx])):
                 value = board[row_idx][column_idx]
                 if value != ".":
-                    possible_values.remove(value)
                     continue
 
-                s = time.time()
-                possible_values = filter_possible_values(
-                    possible_values, row_idx, column_idx
-                )
-                total_time_finding += time.time() - s
-
+                possible_values = filter_possible_values(row_idx, column_idx)
                 for possible_value in possible_values:
                     board[row_idx][column_idx] = possible_value
                     solved = solve_board(
@@ -143,10 +110,6 @@ def run(board: list[list[str]]) -> list[list[str]]:
         return True
 
     solve_board(0, 0)
-    e = time.time()
-    print(
-        f"Total time: {e - total_time:.2f}s, Total time finding: {total_time_finding:.2f}s"
-    )
     return board
 
 
