@@ -76,5 +76,14 @@
                 "sudoku_solver"
             ]
         },
+        {
+            "name": "Coin Change",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "coin_change"
+            ]
+        },
     ]
 }
