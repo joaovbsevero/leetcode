@@ -94,5 +94,14 @@
                 "coin_change_2"
             ]
         },
+        {
+            "name": "Merge Two 2D arrays",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "merge_two_2d_arrays"
+            ]
+        },
     ]
 }
