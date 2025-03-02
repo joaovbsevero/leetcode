@@ -42,24 +42,22 @@ Constraints:
 Reference: https://leetcode.com/problems/coin-change-ii
 """
 
-from functools import cache
-
 
 def run(coins: list[int], amount: int) -> int:
-    @cache
-    def recurse(coins: tuple[int], amount: int) -> int:
-        if amount == 0:
-            return 1
-        elif amount < 0 or not coins:
-            return 0
+    # dp[i] represents the number of ways to make amount i
+    dp = [0] * (amount + 1)
 
-        valid_combinations = 0
-        for coin in coins:
-            valid_combinations += recurse(coins, amount - coin)
+    # Base case: there is 1 way to make amount 0 (by using no coins)
+    dp[0] = 1
 
-        return valid_combinations
+    # For each coin, calculate the number of ways to make each amount
+    for coin in coins:
+        # Update dp array for all amounts that can use this coin
+        for i in range(coin, amount + 1):
+            # Add the number of ways to make the amount without using the current coin
+            dp[i] += dp[i - coin]
 
-    return recurse(tuple(sorted(coins))[::-1], amount)
+    return dp[amount]
 
 
 def test_cases():
