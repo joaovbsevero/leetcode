@@ -1,10 +1,15 @@
 import importlib
+import json
 import os
+import subprocess
 from copy import deepcopy
 from enum import StrEnum
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import typer
+
+app = typer.Typer(add_completion=False)
 
 enum_variants = "    "
 for file in os.scandir("./leetcode"):
@@ -24,7 +29,8 @@ if TYPE_CHECKING:
         pass
 
 
-def main(module_name: Modules):
+@app.command()
+def run(module_name: Modules):
     """
     Run the specified module with the provided test cases.
 
@@ -56,5 +62,41 @@ def main(module_name: Modules):
         typer.secho("Passed", fg=typer.colors.GREEN)
 
 
+@app.command()
+def sync():
+    command = ["git", "ls-files", "-o", "--exclude-standard"]
+    result = subprocess.run(command, stdout=subprocess.PIPE)
+    string = result.stdout.decode("utf-8").strip()
+    if not string:
+        typer.secho("Synced", fg=typer.colors.GREEN)
+        return
+
+    file_path = Path(__file__).parents[1] / ".vscode" / "launch.json"
+    with open(file_path) as f:
+        data = json.load(f)
+
+    for new_file in string.split("\n"):
+        if not new_file.startswith("leetcode/"):
+            continue
+        if not new_file.endswith(".py"):
+            continue
+
+        script_name = new_file.removeprefix("leetcode/").removesuffix(".py")
+        data["configurations"].append(
+            {
+                "name": " ".join(script_name.split("_")).title(),
+                "type": "debugpy",
+                "request": "launch",
+                "module": "leetcode",
+                "args": [script_name],
+            }
+        )
+
+    with open(file_path, "w") as f:
+        json.dump(data, f, indent=4)
+
+    typer.secho("Synced", fg=typer.colors.GREEN)
+
+
 if __name__ == "__main__":
-    typer.run(main)
+    app()

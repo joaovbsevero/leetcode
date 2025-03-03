@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -10,6 +7,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "median_of_two_sorted_arrays"
             ]
         },
@@ -19,6 +17,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "simple_regex"
             ]
         },
@@ -28,6 +27,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "trapping_water"
             ]
         },
@@ -37,6 +37,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "valid_number"
             ]
         },
@@ -46,6 +47,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "serde_binary_tree"
             ]
         },
@@ -55,6 +57,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "merge_k_sorted_lists"
             ]
         },
@@ -64,6 +67,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "longest_valid_parenthesis"
             ]
         },
@@ -73,6 +77,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "sudoku_solver"
             ]
         },
@@ -82,6 +87,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "coin_change"
             ]
         },
@@ -91,6 +97,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "coin_change_2"
             ]
         },
@@ -100,8 +107,19 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "merge_two_2d_arrays"
             ]
         },
+        {
+            "name": "Add Two Numbers",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "run",
+                "add_two_numbers"
+            ]
+        }
     ]
 }
