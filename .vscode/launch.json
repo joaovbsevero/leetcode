@@ -130,6 +130,16 @@
                 "run",
                 "longest_substring_without_repeating_chars"
             ]
+        },
+        {
+            "name": "Pretty Print Tree From Height",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "run",
+                "pretty_print_tree_from_height"
+            ]
         }
     ]
 }
