@@ -120,6 +120,16 @@
                 "run",
                 "add_two_numbers"
             ]
+        },
+        {
+            "name": "Longest Substring Without Repeating Chars",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "run",
+                "longest_substring_without_repeating_chars"
+            ]
         }
     ]
 }

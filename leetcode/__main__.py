@@ -88,7 +88,7 @@ def sync():
                 "type": "debugpy",
                 "request": "launch",
                 "module": "leetcode",
-                "args": [script_name],
+                "args": ["run", script_name],
             }
         )
 
