@@ -147,6 +147,7 @@
             "request": "launch",
             "module": "leetcode",
             "args": [
+                "run",
                 "least_frequently_used"
             ]
         },

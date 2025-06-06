@@ -21,7 +21,7 @@ Example 1:
       ["LFUCache", "put", "put", "get", "put", "get", "get", "put", "get", "get", "get"]
       [[2], [1, 1], [2, 2], [1], [3, 3], [2], [3], [4, 4], [1], [3], [4]]
 
-    Output: [null, null, null, 1, null, -1, 3, null, -1, 3, 4]
+    Output: [None, None, None, 1, None, -1, 3, None, -1, 3, 4]
 
     Explanation:
         // cnt(x) = the use counter for key x
@@ -58,10 +58,12 @@ Constraints:
 Reference: https://leetcode.com/problems/lfu-cache
 """
 
-from typing import Self
+from typing import Generic, Self, TypeVar
+
+T = TypeVar("T")
 
 
-class Node[T]:
+class Node(Generic[T]):
     def __init__(self, v: T) -> None:
         self._v = v
 
@@ -110,8 +112,8 @@ class Node[T]:
     def set_next(self, next: Self | None) -> None:
         self._next = next
 
-    def set_prev(self, next: Self | None) -> None:
-        self._next = next
+    def set_prev(self, prev: Self | None) -> None:
+        self._prev = prev
 
     def link(self, head: Self) -> None:
         """
@@ -163,7 +165,7 @@ class Node[T]:
         return self
 
 
-class LinkedList[T]:
+class LinkedList(Generic[T]):
     def __init__(self) -> None:
         self.head: Node[T] | None = None
         self.tail: Node[T] | None = None
@@ -192,6 +194,7 @@ class LinkedList[T]:
         else:
             # Connect the new node after the current tail
             new.link(self.tail)  # type: ignore -> Safety: Non-empty lists always have head and tail
+            self.tail = new
 
     def push_front(self, new: Node[T]) -> None:
         """
@@ -208,6 +211,7 @@ class LinkedList[T]:
         else:
             # Connect the new node before the current head
             self.head.link(new)  # type: ignore -> Safety: Non-empty lists always have head and tail
+            self.head = new
 
     def pop_back(self) -> Node[T]:
         """
@@ -298,16 +302,15 @@ class LFUCache:
         old_count = v.count
         old_group = self._count_to_group[old_count]
 
-        # Update LinkedList head to head->next
         if node.is_head():
-            old_group.head = node.next()
-
-        # Update LinkedList tail to head->prev
-        if node.is_tail():
-            old_group.tail = node.prev()
-
-        # Disconnect from previous LinkedList
-        node.unlink()
+            # Update LinkedList head to head->next
+            old_group.pop_front()
+        elif node.is_tail():
+            # Update LinkedList tail to head->prev
+            old_group.pop_back()
+        else:
+            # Disconnect from previous LinkedList
+            node.unlink()
 
         # Update value group
         v.count += 1
@@ -368,3 +371,55 @@ class LFUCache:
             group = LinkedList()
             group.push_back(node)
             self._count_to_group[count] = group
+
+
+def run(
+    actions: list[str],
+    inputs: list[tuple[int, int] | tuple[int]],
+) -> list[int | None]:
+    capacity = inputs[0]
+    cache = LFUCache(capacity[0])
+
+    outcomes: list[int | None] = [None]
+    for action, data in zip(actions[1:], inputs[1:]):
+        outcomes.append(getattr(cache, action)(*data))
+
+    return outcomes
+
+
+def test_cases():
+    return [
+        (
+            (
+                [
+                    "LFUCache",
+                    "put",
+                    "put",
+                    "get",
+                    "get",
+                    "get",
+                    "put",
+                    "put",
+                    "get",
+                    "get",
+                    "get",
+                    "get",
+                ],
+                [
+                    [3],
+                    [2, 2],
+                    [1, 1],
+                    [2],
+                    [1],
+                    [2],
+                    [3, 3],
+                    [4, 4],
+                    [3],
+                    [2],
+                    [1],
+                    [4],
+                ],
+            ),
+            [None, None, None, 2, 1, 2, None, None, -1, 2, 1, 4],
+        )
+    ]
