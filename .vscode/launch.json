@@ -140,6 +140,15 @@
                 "run",
                 "pretty_print_tree_from_height"
             ]
-        }
+        },
+        {
+            "name": "LFU Cache",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "leetcode",
+            "args": [
+                "least_frequently_used"
+            ]
+        },
     ]
 }
